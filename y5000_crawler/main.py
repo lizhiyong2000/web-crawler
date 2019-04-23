@@ -63,6 +63,8 @@ def validateTitle(title):
     title = re.sub(r"__", "_", title)
 
     print(title)
+
+    title = '2019-04-22-' + title
     return title
 
 

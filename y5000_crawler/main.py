@@ -1,8 +1,8 @@
-from scrapy import cmdline
-
-import html2markdown
-
-import html2text
+# from scrapy import cmdline
+#
+# import html2markdown
+#
+# import html2text
 
 
 # content = '''
@@ -34,4 +34,55 @@ import html2text
 #
 # print(html2text.html2text(content))
 
-cmdline.execute("scrapy crawl y5000".split())
+# cmdline.execute("scrapy crawl y5000".split())
+import os
+import re
+
+
+def validateTitle(title):
+
+    if title.startswith('_'):
+        title = title[1:]
+
+    rule = re.compile(r"[^a-zA-Z0-9\u4e00-\u9fa5]\.")
+    title = rule.sub('_',title)
+    #
+    # rstr1 = r"…！？"
+    #
+    # title = re.sub(rstr1, "", title)
+    #
+    #
+    # rstr = r"[\/\\\:\*\?\"\<\>\|《》，“”：、—]"  # '/ \ : * ? " < > |'
+    # title = re.sub(rstr, "_", title)  # 替换为下划线
+
+    title = re.sub(r"__", "_", title)
+    title = re.sub(r"__md", ".md", title)
+    title = re.sub(r"_md", ".md", title)
+    title = re.sub(r"_.md", ".md", title)
+
+    title = re.sub(r"__", "_", title)
+
+    print(title)
+    return title
+
+
+
+cwd = os.getcwd()
+
+path = os.path.join(cwd, "results")
+
+dirList = os.listdir(path)
+# print(fileList)
+
+for dir in dirList:
+
+
+    dir_path = os.path.join(path, dir)
+    filesList = os.listdir(dir_path)
+
+    for file_name in filesList:
+
+        os.rename(os.path.join(dir_path, file_name), os.path.join(dir_path, validateTitle(file_name)))
+        pass
+
+
